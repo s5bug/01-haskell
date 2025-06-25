@@ -28,8 +28,10 @@ def in_import_node(node) -> bool:
 def main(taboo_file: str, source_path: tuple[str, ...]) -> int:
     # search $CWD/src/* if no paths are provided
     if len(source_path) == 0:
+        if not os.path.isdir("src"):
+            raise click.BadParameter(f"Source path(s) not specified and `src` directory not found in {os.getcwd()}")
         source_path = map(
-            lambda file: os.path.join(os.getcwd(), "src", file),
+            lambda file: os.path.join("src", file),
             os.listdir(os.path.join(os.getcwd(), "src"))
         )
 
@@ -117,4 +119,4 @@ def main(taboo_file: str, source_path: tuple[str, ...]) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(standalone_mode=False))
